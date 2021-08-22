@@ -1,13 +1,26 @@
 import serial
 import time
 
-if __name__ =='__main__':
-    ser=serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+def main():
+    ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
     ser.flush()
-    count = 0
+
+    command = int(input("Enter Choice: "))  # it takes user input
+
+    if command == 1:
+        sendCommand(1, ser)
+    if command == 2:
+        sendCommand(2, ser)
+    if command == 3:
+        sendCommand(3, ser)
+
     while True:
-        ser.write(b"Hello from Pi!\n")
-        line=ser.readline().decode('utf-8').rstrip()
+        line = ser.readline().decode('utf-8').rstrip()
         print("Message from Arduino: ", line)
         time.sleep(1)
-        count += 1
+
+def sendCommand(command, ser):
+    ser.write(str(command).encode('utf-8'))
+
+if __name__ == '__main__':
+    main()
