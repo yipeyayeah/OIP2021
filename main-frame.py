@@ -59,9 +59,12 @@ class Test(Frame):
         self.startButton = Button(self, text="Start", command = self.startWork)
         self.startButton.grid(row=1, column=3, pady=4)
 
-        self.settingButton = Button(self, text="Setting", command = self.setting)
-        self.settingButton.grid(row=2, column=3, pady=4)
+        #self.pumpButton = Button(self, text="Pump", command = self.pump)
+        #self.pumpButton.grid(row=2, column=3, pady=4)
 
+        #self.dumpButton = Button(self, text="Dump", command = self.dump)
+        #self.dumpButton.grid(row=3, column=3, pady=4)
+        
         #hbtn = Button(self, text="Help")
         #hbtn.grid(row=5, column=0, padx=5)
 
@@ -74,53 +77,101 @@ class Test(Frame):
         #photo taken compare with slickk ai
         #dry, wet, dirty activate components
         
-        camera = PiCamera()
+        #camera = PiCamera()
 
-        camera.start_preview()
-        camera.annotate_text = "Hello world!"
-        sleep(5)
-        camera.capture('/home/pi/Desktop/text.jpg')
-        camera.stop_preview()
+        #camera.start_preview()
+        #camera.annotate_text = "Hello world!"
+        #sleep(5)
+        #camera.capture('/home/pi/Desktop/text.jpg')
+        #camera.stop_preview()
+        
+        # Set the timer countdown to be 3 seconds
+        TIMER = int(3)
+        window_name = "STERIDRY 2.0"
+
+        print("[INFO] Starting camera stream.")
+
+        # Open the camera
+        cap = cv2.VideoCapture(0)
+
+        while True:
+            # Read and display each frame
+            ret, img = cap.read()
+            cv2.imshow(window_name, img)
+
+            # Check for the key pressed
+            k = cv2.waitKey(125)
+
+            # Trigger key is q to start the countdown to take JPG
+            if k == ord('q'):
+                prev = time.time()
+
+                while TIMER >= 0:
+                    ret, img = cap.read()
+
+                    # Display countdown on each frame
+                    font = cv2.FONT_HERSHEY_SIMPLEX
+                    cv2.putText(img, str(TIMER),
+                                (225, 325), font,
+                                10, (0, 255, 255),
+                                4, cv2.LINE_AA)
+                    cv2.imshow(window_name, img)
+                    cv2.waitKey(125)
+
+                    # current time
+                    cur = time.time()
+
+                    # Update and keep track of Countdown
+                    # if time elapsed is one second
+                    # than decrease the counter
+                    if cur - prev >= 1:
+                        prev = cur
+                        TIMER = TIMER - 1
+
+                else:
+                    ret, img = cap.read()
+
+                    # Display the clicked frame for 2
+                    # sec.You can increase time in
+                    # waitKey also
+                    cv2.imshow(window_name, img)
+
+                    # time for which image displayed
+                    cv2.waitKey(2000)
+
+                    # Save the frame as a jpg
+                    cv2.imwrite('camera.jpg', img)
+
+                    # Reset the countdown
+                    TIMER = 3
+                    break
+
+            # Press Esc to exit
+            elif k == 27:
+                break
+
+        # close the camera
+        cap.release()
+
+        # close all the opened windows
+        cv2.destroyAllWindows()
+
         
 
-    def setting(self):
-        app = tk.Tk()
-        newWindow = tk.Toplevel(app)
+    #def pump(self):
+            
+    #def setting(self):
+        #app = tk.Tk()
+        #newWindow = tk.Toplevel(app)
                 
-        newWindow.title("Settings")
-        newWindow.geometry("500x300")
+        #newWindow.title("Settings")
+        #newWindow.geometry("500x300")
         #Label(newWindow, text ="This is a new window")
+
+        #confirmButton = Button(self, text="Confirm", command = self.quit)
+        #confirmButton.grid(row=5, column=3)
         
 
-        confirmButton = Button(self, text="Confirm", command = self.quit)
-        confirmButton.grid(row=5, column=3)
-        
-
-waterControl = [
-                "Low",
-                "Medium",
-                "High"
-        ]
-fanSpeed = [
-                "Low",
-                "Medium",
-                "High"
-        ]
-
-lab1 = Label(root, text="condition №1", font="Arial 8", anchor='w')
-mymenu1 = OptionMenu(root, 'Low', *waterControl)
-lab2 = Label(root, text="condition №2", font="Arial 8", anchor='w')
-mymenu2 = OptionMenu(root, 'Low', *fanSpeed)
-
-lab1.pack(side="top",fill = "x")
-mymenu1.pack(side="top",fill = "y")
-lab2.pack(side="top",fill = "x")
-mymenu2.pack(side="top",fill = "y")
-
-        #clicked = tk.StringVar()
-        #clicked.set("Low")
-        #drop = OptionMenu(root, clicked, *options)
-        #drop.pack()  
             
 def quit(self):
         self.root.destroy()
