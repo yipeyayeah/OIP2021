@@ -74,6 +74,7 @@ class Test(Frame):
         exitButton = Button(self, text="Exit", command = self.quit)
         exitButton.grid(row=4, column=3, pady=4)
         #root.mainloop()
+<<<<<<< HEAD
         
         #button to start the process
     def startWork(self):
@@ -83,12 +84,10 @@ class Test(Frame):
         #dry, wet, dirty activate components
         
         #camera = PiCamera()
+=======
+>>>>>>> 6f604e6ba0305c0fd3658a47fdc17ece5035ce55
 
-        #camera.start_preview()
-        #camera.annotate_text = "Hello world!"
-        #sleep(5)
-        #camera.capture('/home/pi/Desktop/text.jpg')
-        #camera.stop_preview()
+    def startWork(self):
         
         # Set the timer countdown to be 3 seconds
         TIMER = int(3)
@@ -160,6 +159,7 @@ class Test(Frame):
 
         # close all the opened windows
         cv2.destroyAllWindows()
+<<<<<<< HEAD
         
         #ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
         #ser.flush()
@@ -198,6 +198,13 @@ class Test(Frame):
         #pumping of water
     def pump(self):
             print("Pump")
+=======
+
+    def SendCommandToArdunio(self):
+
+
+
+>>>>>>> 6f604e6ba0305c0fd3658a47fdc17ece5035ce55
 
         #dumping of water
     def dump(self):
