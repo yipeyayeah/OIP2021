@@ -1,4 +1,5 @@
 from tkinter import *
+import tkinter.ttk as ttk
 from tkinter.ttk import Frame, Button, Label, Style
 from PIL import ImageTk, Image
 import os, time, cv2
@@ -8,7 +9,6 @@ from time import sleep
 
 root = Tk()
 root.geometry("500x500")
-
 
 try:
     import Tkinter as tk
@@ -29,26 +29,27 @@ class Test(Frame):
 
         self.columnconfigure(1, weight=1)
         self.columnconfigure(3, pad=7)
-        self.rowconfigure(3, weight=1)
-        self.rowconfigure(5, pad=7)
+        self.rowconfigure(4, weight=1)
+        self.rowconfigure(3, pad=7)
         
         #display image
-        #image1 = Image.open("syringe.jpg")
-        #image2 = image1.resize((350, 350), Image.ANTIALIAS)
-        #test = ImageTk.PhotoImage(image2)
+        image1 = Image.open("syringe.jpg")
+        image2 = image1.resize((350, 350), Image.ANTIALIAS)
+        test = ImageTk.PhotoImage(image2)
 
-        #label1 = tk.Label(image=test)
-        #label1.image = test
+        label1 = tk.Label(image=test)
+        label1.image = test
 
         # Position image
-        #label1.place(x=6, y=4)
+        label1.place(x=6, y=4)
         
         #text
         T = tk.Text(padx=1, pady=1, height=8, width=27)
         T.place(x=1, y=1)
         T.pack()
         T.insert(tk.END, "Group 31\n\nMuhammad Zulhusni Bin Jumat\nLim Boon Seong\nLee Alan\nGideon Yip Yue Onn\nLim Yi Wei, Ivan ")
-
+        T.config(state=DISABLED)
+        
         #lbl = Label(self, text="Windows")
         #lbl.grid(sticky=W, pady=4, padx=5)
 
@@ -56,14 +57,16 @@ class Test(Frame):
         #area.grid(row=1, column=0, columnspan=2, rowspan=4,
             #padx=5, sticky=E+W+S+N)
 
-        self.startButton = Button(self, text="Start", command = self.startWork)
+        style = ttk.Style()
+        style.configure("BW.TLabel", foreground="White", background="green")
+        self.startButton = ttk.Button(self, text="      Start", width=10, style="BW.TLabel", command = self.startWork)
         self.startButton.grid(row=1, column=3, pady=4)
 
-        #self.pumpButton = Button(self, text="Pump", command = self.pump)
-        #self.pumpButton.grid(row=2, column=3, pady=4)
+        self.pumpButton = Button(self, text="Pump", command = self.pump)
+        self.pumpButton.grid(row=2, column=3, pady=4)
 
-        #self.dumpButton = Button(self, text="Dump", command = self.dump)
-        #self.dumpButton.grid(row=3, column=3, pady=4)
+        self.dumpButton = Button(self, text="Dump", command = self.dump)
+        self.dumpButton.grid(row=3, column=3, pady=4)
         
         #hbtn = Button(self, text="Help")
         #hbtn.grid(row=5, column=0, padx=5)
@@ -71,6 +74,8 @@ class Test(Frame):
         exitButton = Button(self, text="Exit", command = self.quit)
         exitButton.grid(row=4, column=3, pady=4)
         #root.mainloop()
+        
+        #button to start the process
     def startWork(self):
         print("Start working")
         #activate camera module to take pic of syringe
@@ -140,7 +145,7 @@ class Test(Frame):
                     cv2.waitKey(2000)
 
                     # Save the frame as a jpg
-                    cv2.imwrite('camera.jpg', img)
+                    cv2.imwrite('camera2.jpg', img)
 
                     # Reset the countdown
                     TIMER = 3
@@ -155,10 +160,48 @@ class Test(Frame):
 
         # close all the opened windows
         cv2.destroyAllWindows()
-
         
+        #ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+        #ser.flush()
+    
+        ############# integrate entire thing here ###################
+        #upload camera.jpg and compare with slickk ai for the label of syringe
+        #api return value of ...
+        #1 = dirty, 2 = wet, 3 = dry 
+        
+        #command = (return value)
+        #if command == 1:
+            #sendCommand(1, ser)
+            #info send to arduino and do wash, dry, sterilise
+            #arduino send back an ack once all cleaning process done
+            #code to send sms
+        #if command == 2:
+            #sendCommand(2, ser)
+            #info send to arduino and do dry, sterilise
+            #arduino send back an ack once all cleaning process done
+            #code to send sms            
+        #if command == 3:
+            #sendCommand(3, ser)
+            #info send to arduino and do sterilise
+            #arduino send back an ack once all cleaning process done
+            #code to send sms            
 
-    #def pump(self):
+        #while True:
+            #line = ser.readline().decode('utf-8').rstrip()
+            #print("Message from Arduino: ", line)
+            #time.sleep(1)
+
+#def sendCommand(command, ser):
+    #ser.write(str(command).encode('utf-8'))
+                
+
+        #pumping of water
+    def pump(self):
+            print("Pump")
+
+        #dumping of water
+    def dump(self):
+            print("Dump")
             
     #def setting(self):
         #app = tk.Tk()
@@ -170,14 +213,11 @@ class Test(Frame):
 
         #confirmButton = Button(self, text="Confirm", command = self.quit)
         #confirmButton.grid(row=5, column=3)
-        
-
             
 def quit(self):
         self.root.destroy()
         
 def main():
-
 
     app = Test()
     root.mainloop()
