@@ -14,7 +14,13 @@ def main():
         sendCommand(2, ser)
     if command == 3:
         sendCommand(3, ser)
-
+    if command == 5:
+        sendCommand(5, ser)
+    if command == 6:
+        sendCommand(6, ser)
+    if command == 7:
+        sendCommand(7, ser)
+    
     while check:
         line = ser.readline().decode('utf-8').rstrip()
         print("Message from Arduino: ", line)

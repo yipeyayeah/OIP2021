@@ -71,19 +71,8 @@ class Test(Frame):
         exitButton = Button(self, text="Exit", command = self.quit)
         exitButton.grid(row=4, column=3, pady=4)
         #root.mainloop()
-    def startWork(self):
-        print("Start working")
-        #activate camera module to take pic of syringe
-        #photo taken compare with slickk ai
-        #dry, wet, dirty activate components
-        
-        #camera = PiCamera()
 
-        #camera.start_preview()
-        #camera.annotate_text = "Hello world!"
-        #sleep(5)
-        #camera.capture('/home/pi/Desktop/text.jpg')
-        #camera.stop_preview()
+    def startWork(self):
         
         # Set the timer countdown to be 3 seconds
         TIMER = int(3)
@@ -156,7 +145,10 @@ class Test(Frame):
         # close all the opened windows
         cv2.destroyAllWindows()
 
-        
+    def SendCommandToArdunio(self):
+
+
+
 
     #def pump(self):
             
@@ -177,7 +169,6 @@ def quit(self):
         self.root.destroy()
         
 def main():
-
 
     app = Test()
     root.mainloop()
