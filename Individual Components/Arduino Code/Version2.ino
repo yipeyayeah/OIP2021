@@ -20,7 +20,6 @@ volatile byte CleaningMode = LOW;
 const int stepsPerRevolution = 2048; //number of steps per revolution
 Stepper Stepper1 = Stepper(stepsPerRevolution, 24, 26, 25, 27);
 
-
 void setup() {
   Serial.begin(9600);
 
@@ -35,66 +34,56 @@ void setup() {
   pinMode(RGB_green, OUTPUT); 
 
   //Stepper Motor setup()
-  Stepper1.setSpeed(15);  //set the speed to 5 rpm
+  Stepper1.setSpeed(15);
 }
 
 void loop() {
+  
   digitalWrite(LED_green, HIGH); //turn on green LED (Idle Mode)
   digitalWrite(LED_orange, LOW); //turn off red LED
   digitalWrite(RGB_green, HIGH); //turn off water valves
   
-  while(Serial.available()==0){
-  }
-  int CleaningMode = Serial.read();
-  sendMessage("4");
-  while(CleaningMode == 1){
-    digitalWrite(LED_green, LOW); //turn off Green LED
-    digitalWrite(LED_orange, HIGH); //turn on Orange LED (Cleaning Mode)
-    if (Serial.available() > 0) {
-      int command = Serial.read() - '0';
-      Serial.print("[Arduino] Value received: ");
-      Serial.println(command);
+  if (Serial.available() > 0) {
+    int command = Serial.read() - '0';
+    Serial.print("[Arduino] Value received: ");
+    Serial.println(command);
 
-      switch (command) {
-        case 1:
-          sendMessage("[Arduino] Inside Case 1. Executing Cleaning Cycle.");
-          CleaningProcess();
-          sendMessage("4");
-          break;
-        
-        case 2:
-          sendMessage("[Arduino] Inside Case 2. Executing Drying Cycle.");
-          DryingProcess();
-          sendMessage("4");
-          break;
-          
-        case 3:
-          sendMessage("[Arduino] Inside Case 3. Executing Sterilization Cycle.");
-          SterilizationProcess();
-          sendMessage("4");
-          break;
-          
-        case 5:
-          sendMessage("[Arduino] Inside Case 3. Executing Check Syringes Cycle.");
-          CheckSyringe();
-          sendMessage("4");CheckSyringe();
-          break;
-          
-        case 6:
-          sendMessage("[Arduino] Inside Case 3. Executing Fill Tank Cycle.");
-          FillTank();
-          sendMessage("4");
-          break;
-          
-        case 7:
-          sendMessage("[Arduino] Inside Case 3. Executing Drain Tank Cycle.");
-          DrainTank();
-          sendMessage("4");
-          break;                
-        default: 
-          break;
-      }
+    switch (command) {
+      case 1:
+        sendMessage("[Arduino] Inside Case 1. Executing Case 1.");    
+        CleaningProcess();
+        sendMessage("4");
+        break;
+      case 2:
+        sendMessage("[Arduino] Inside Case 2. Executing Case 2.");
+        DryingProcess();
+        sendMessage("4");
+        break;
+      case 3:
+        sendMessage("[Arduino] Inside Case 3. Executing Case 3.");
+        SterilizationProcess();
+        sendMessage("4");
+        break;
+      case 5:
+        sendMessage("[Arduino] Inside Case 5. Executing Case 5.");
+        CheckSyringe();
+        sendMessage("4");
+        break;
+      case 6:
+        sendMessage("[Arduino] Inside Case 6. Executing Case 6.");
+        FillTank();
+        sendMessage("4");
+        break;
+      case 7:
+        sendMessage("[Arduino] Inside Case 7. Executing Case 7.");
+        DrainTank();
+        sendMessage("4");
+        break;
+                
+      default: 
+        break;
     }
+
   }
 }
 
@@ -102,7 +91,6 @@ void sendMessage(String m){
   Serial.println(m);
   delay(1000);
 }
-
 void FillTank(){
   digitalWrite(RGB_green, LOW);          //OPEN SOLENOID VALVE 1
   value = 0;
