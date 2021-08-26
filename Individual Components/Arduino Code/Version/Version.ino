@@ -94,7 +94,7 @@ void sendMessage(String m){
 void FillTank(){
   digitalWrite(RGB_green, LOW);          //OPEN SOLENOID VALVE 1
   value = 0;
-  while(value < 545){
+  while(value < 550){
     digitalWrite(Water_Sensor_Power, HIGH);
     delay(1000);
     value = analogRead(Water_Sensor_Signal);
