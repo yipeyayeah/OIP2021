@@ -27,6 +27,8 @@ def main():
         time.sleep(1)
         if (line == '4'):
             check = False
+            
+       
 
 def sendCommand(command, ser):
     ser.write(str(command).encode('utf-8'))

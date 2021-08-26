@@ -14,7 +14,8 @@ class TestGUI():
 
     def __init__(self):
         self.root = tk.Tk()
-        self.root.attributes("-fullscreen", True) 
+        self.root.geometry("800x480")
+        # self.root.attributes("-fullscreen", True)
 
         # Establish serial connection with Arduino
         self.ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
@@ -105,6 +106,8 @@ class TestGUI():
         check = True
         while count < 6:
             self.sendCommandToArduino(5, self.ser)
+            print("inside")
+            check = True
             while check:
                 line = self.ser.readline().decode('utf-8').rstrip()
                 print("[checkSyringes] Message from Arduino: ", line)
@@ -116,11 +119,12 @@ class TestGUI():
                     syringeStatus[count] = rs
                     check = False
                     count += 1
-                time.sleep(1)
 
-        if 'Dirty' in self.syringeStatus:
+                # time.sleep(1)
+
+        if 'Dirty' in syringeStatus:
             self.cleaningProcess()
-        elif 'Wet' in self.syringeStatus:
+        elif 'Wet' in syringeStatus:
             self.dryingProcess()
         else:
             self.sterilisationProcess()
