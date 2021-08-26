@@ -47,24 +47,9 @@ class TestGUI():
         self.checkingSyringeImage = Image.open("resources/CheckingSyringe.png")
         self.checkingSyringePhotoImage = ImageTk.PhotoImage(self.checkingSyringeImage)
 
-        self.settingsImage = Image.open("resources/settingsButton.png")
-        self.settingsPhotoImage = ImageTk.PhotoImage(self.settingsImage)
-
-        self.settingsImage = Image.open("resources/settingsButton.png")
-        self.settingsPhotoImage = ImageTk.PhotoImage(self.settingsImage)
-
-        self.settingsScreenImage = Image.open("resources/SettingScreen.png")
-        self.settingsScreenPhotoImage = ImageTk.PhotoImage(self.settingsScreenImage)
-
         self.lblHomeScreen = tk.Label(fg='#F0EFF5', image=self.homeScreenPhotoImage, borderwidth=0,
                                       highlightthickness=0)
         self.lblHomeScreen.place(relwidth=1, relheight=1, relx=0, rely=0)
-
-        self.btnSettings = tk.Button(image=self.settingsPhotoImage, borderwidth=0,
-                                     highlightthickness=0, cursor="hand1", command=lambda: self.settingsPage())
-        self.btnSettings.place(x=48, y=197)
-
-
 
         self.lblProcessOne = tk.Label()
         self.lblProcessTwo = tk.Label()
@@ -83,10 +68,7 @@ class TestGUI():
         self.lblStartText.place(x=440, y=340)
         self.root.mainloop()
 
-    def settingsPage(self):
-        self.lblHomeScreen = tk.Label( image=self.settingsScreenPhotoImage, borderwidth=0,
-                                      highlightthickness=0)
-        self.lblHomeScreen.place(relwidth=1, relheight=1, relx=0, rely=0)
+
 
     def checkSyringes(self):
         # Refreshes GUI components to show the cleaning process
