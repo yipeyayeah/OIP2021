@@ -14,8 +14,8 @@ class TestGUI():
 
     def __init__(self):
         self.root = tk.Tk()
-        self.root.geometry("800x480")
-        # self.root.attributes("-fullscreen", True)
+        # self.root.geometry("800x480")
+        self.root.attributes("-fullscreen", True)
 
         # Establish serial connection with Arduino
         self.ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
@@ -48,22 +48,10 @@ class TestGUI():
         self.checkingSyringeImage = Image.open("resources/CheckingSyringe.png")
         self.checkingSyringePhotoImage = ImageTk.PhotoImage(self.checkingSyringeImage)
 
-        self.settingsImage = Image.open("resources/settingsButton.png")
-        self.settingsPhotoImage = ImageTk.PhotoImage(self.settingsImage)
-
-        self.settingsImage = Image.open("resources/settingsButton.png")
-        self.settingsPhotoImage = ImageTk.PhotoImage(self.settingsImage)
-
-        self.settingsScreenImage = Image.open("resources/SettingScreen.png")
-        self.settingsScreenPhotoImage = ImageTk.PhotoImage(self.settingsScreenImage)
 
         self.lblHomeScreen = tk.Label(fg='#F0EFF5', image=self.homeScreenPhotoImage, borderwidth=0,
                                       highlightthickness=0)
         self.lblHomeScreen.place(relwidth=1, relheight=1, relx=0, rely=0)
-
-        self.btnSettings = tk.Button(image=self.settingsPhotoImage, borderwidth=0,
-                                     highlightthickness=0, cursor="hand1", command=lambda: self.settingsPage())
-        self.btnSettings.place(x=48, y=197)
 
 
 
@@ -84,10 +72,6 @@ class TestGUI():
         self.lblStartText.place(x=440, y=340)
         self.root.mainloop()
 
-    def settingsPage(self):
-        self.lblHomeScreen = tk.Label( image=self.settingsScreenPhotoImage, borderwidth=0,
-                                      highlightthickness=0)
-        self.lblHomeScreen.place(relwidth=1, relheight=1, relx=0, rely=0)
 
     def checkSyringes(self):
         # Refreshes GUI components to show the cleaning process
@@ -125,9 +109,9 @@ class TestGUI():
 
                 # time.sleep(1)
 
-        if 'Dirty' in syringeStatus:
+        if 'dirty' in syringeStatus:
             self.cleaningProcess()
-        elif 'Wet' in syringeStatus:
+        elif 'wet' in syringeStatus:
             self.dryingProcess()
         else:
             self.sterilisationProcess()
@@ -205,6 +189,7 @@ class TestGUI():
                                              highlightthickness=0)
         self.lblCleaningCompleted.place(x=320, y=185)
         self.root.update()
+        self.sendSMS()
         messagebox.showinfo("Cleaning completed", "SMS sent to nurse.")
 
         self.reset()
@@ -290,7 +275,10 @@ class TestGUI():
         cv2.destroyAllWindows()
 
     def sendToAPI(self):
-        project_id = 'dfbb7979-773f-4b4e-b8b9-64331d6fd477'
+        project_id = 'db06a0d9-66d8-4a25-8271-545c23db73d9' #backup classification
+   
+        # project_id = '53910905-2afc-430d-8f8e-e491ed97b4e8' #object detection (clearn, dirty, empty)
+        # project_id = 'dfbb7979-773f-4b4e-b8b9-64331d6fd477'
         code = """curl --silent --request POST \
         --url https://app.slickk.ai/api/project/entryPoint \
         --header 'Accept: */*' \
@@ -312,15 +300,15 @@ class TestGUI():
     def sendCommandToArduino(self, command, ser):
         ser.write(str(command).encode('utf-8'))
 
-    def sendSMS():
+    def sendSMS(self):
         account_sid = "AC35b622ad2fd3094dfd47f9b94e4ef723"
         auth_token = "a6bed858fc2a1c35ce4cbda258099701"
         client = Client(account_sid, auth_token)
 
         client.messages.create(
-            to="+65" + str(96388495),
+            to="+65" + str(92313810),
             from_="+16182081528",
-            body="Cleaning Cycle Completed! Please check STERIDRY machine.")
+            body="Cleaning Cycle Completed! Please check STERIDRY machine :)")
 
 
 app = TestGUI()

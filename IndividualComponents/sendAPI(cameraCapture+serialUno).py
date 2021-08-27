@@ -6,8 +6,8 @@ file_paths = [os.path.join(Path().absolute(),'camera.jpg')]
 
 def sendToAPI():
     #project_id = 'dfbb7979-773f-4b4e-b8b9-64331d6fd477' #OG undesirable api
-    #project_id = '53910905-2afc-430d-8f8e-e491ed97b4e8' #object detection (clearn, dirty, empty)
-    project_id = 'db06a0d9-66d8-4a25-8271-545c23db73d9' #backup classification
+    project_id = '53910905-2afc-430d-8f8e-e491ed97b4e8' #object detection (clearn, dirty, empty)
+    #project_id = 'db06a0d9-66d8-4a25-8271-545c23db73d9' #backup classification
     code = """curl --silent --request POST \
     --url https://app.slickk.ai/api/project/entryPoint \
     --header 'Accept: */*' \
