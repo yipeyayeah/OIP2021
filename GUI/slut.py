@@ -98,13 +98,15 @@ class TestGUI():
         self.lblProcessTwo.lower()
         self.lblProcessOne = tk.Label(fg='#F0EFF5', image=self.checkingSyringePhotoImage)
         self.lblProcessOne.place(x=300, y=170)
-
+        self.root.update()
+        
         # Send command '5' six times. For each command, wait for ack ['4']
         # Once '4' is received, execute capture image
         # After capture image, send to API
         count = 0
         check = True
-        while count < 6:
+        while count < 2:
+            
             self.sendCommandToArduino(5, self.ser)
             print("inside")
             check = True
@@ -113,6 +115,7 @@ class TestGUI():
                 print("[checkSyringes] Message from Arduino: ", line)
                 if (line == '4'):
                     self.captureImage()
+                    self.root.update()
                     rs = self.sendToAPI()
                     print('Count: ', count)
                     print('Results: ' + rs)
@@ -138,6 +141,7 @@ class TestGUI():
         self.lblProcessOne.place(x=300, y=170)
         self.lblProcessTwo = tk.Label(fg='#F0EFF5', image=self.checkingSyringePhotoImage)
         self.lblProcessTwo.place(x=300, y=290)
+        self.root.update()
 
         self.sendCommandToArduino(1, self.ser)
 
@@ -158,6 +162,7 @@ class TestGUI():
         self.lblProcessOne.place(x=300, y=170)
         self.lblProcessTwo = tk.Label(fg='#F0EFF5', image=self.cleaningProcessPhotoImage)
         self.lblProcessTwo.place(x=300, y=290)
+        self.root.update()
 
         self.sendCommandToArduino(2, self.ser)
 
@@ -179,6 +184,7 @@ class TestGUI():
         self.lblProcessOne.place(x=300, y=170)
         self.lblProcessTwo = tk.Label(fg='#F0EFF5', image=self.dryingProcessPhotoImage)
         self.lblProcessTwo.place(x=300, y=290)
+        self.root.update()
 
         self.sendCommandToArduino(3, self.ser)
 
@@ -198,6 +204,7 @@ class TestGUI():
         self.lblCleaningCompleted = tk.Label(fg='#F0EFF5', image=self.cleaningCompletedPhotoImage, borderwidth=0,
                                              highlightthickness=0)
         self.lblCleaningCompleted.place(x=320, y=185)
+        self.root.update()
         messagebox.showinfo("Cleaning completed", "SMS sent to nurse.")
 
         self.reset()

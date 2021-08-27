@@ -1,8 +1,52 @@
-import os, time, cv2, json, re
+import os, time, cv2, json, re, serial
 from pathlib import Path
 
 file_paths = [os.path.join(Path().absolute(),'camera.jpg')]
+# Establish serial connection with Arduino
 
+
+def cleaningProcess(ser):
+
+    sendCommandToArduino(1, ser)
+
+    check = True
+    while check:
+        line = ser.readline().decode('utf-8').rstrip()
+        if len(line) != 0:
+            print("[cleaningProcess] Message from Arduino: ", line)
+        time.sleep(1)
+        if (line == '4'):
+            check = False
+
+    dryingProcess(ser)
+
+
+def dryingProcess(ser):
+    sendCommandToArduino(2, ser)
+
+    check = True
+    while check:
+        line = ser.readline().decode('utf-8').rstrip()
+        if len(line) != 0:
+            print("[dryingProcess] Message from Arduino: ", line)
+        time.sleep(1)
+        if (line == '4'):
+            check = False
+
+    sterilisationProcess(ser)
+
+
+def sterilisationProcess(ser):
+    sendCommandToArduino(3, ser)
+
+    check = True
+    while check:
+        line = ser.readline().decode('utf-8').rstrip()
+        if len(line) != 0:
+            print("[sterilisationProcess] Message from Arduino: ", line)
+        time.sleep(1)
+        if (line == '4'):
+            check = False
 
 def sendToAPI():
     project_id = 'dfbb7979-773f-4b4e-b8b9-64331d6fd477'
@@ -13,17 +57,19 @@ def sendToAPI():
     --header 'Connection: keep-alive' \
     --header 'Content-Type: multipart/form-data' \
     --form "projectId={1}" \
-    {0}""".format(''.join(["--form data=@{0}".format(path) for path in file_paths]),project_id)
+    {0}""".format(''.join(["--form data=@{0}".format(path) for path in file_paths]), project_id)
 
-    #execute code
+        # execute code
     results = os.popen(code).read()
-    #above return string, include progress, so remove
-    results = re.sub(r'{"progress":\d+,"max":\d+}',"", results)
-    #process using json library and load into program
+        # above return string, include progress, so remove
+    results = re.sub(r'{"progress":\d+,"max":\d+}', "", results)
+        # process using json library and load into program
     results = json.loads(results)
-    #print text of the result
+        # print text of the result
     return str(results[0]["text"])
 
+def sendCommandToArduino(command, ser):
+    ser.write(str(command).encode('utf-8'))
 
 def captureImage():
     
@@ -98,12 +144,17 @@ def captureImage():
     cv2.destroyAllWindows()
     
 def main():
+    ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+    ser.flush()
+
+
+    captureImage()
+    rs = sendToAPI()
+    print('Result from slickk.ai API: '+ rs)
+    if rs == 'Dirty':
+        cleaningProcess(ser)
+        
     
-    command = int(input("Enter 1 to activate camera and send to API for detection: "))
-    if command == 1:
-        captureImage()
-        rs = sendToAPI()
-        print('Result from slickk.ai API: '+ rs)
     
 
 main()

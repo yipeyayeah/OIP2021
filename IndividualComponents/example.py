@@ -3,9 +3,10 @@ import json
 import re
 from pathlib import Path
 
-file_paths = [os.path.join(Path().absolute(),'camera.jpg')]
+file_paths = [os.path.join(Path().absolute(), 'camera.jpg')]
 
-project_id = 'dfbb7979-773f-4b4e-b8b9-64331d6fd477'
+#project_id = 'dfbb7979-773f-4b4e-b8b9-64331d6fd477'
+project_id = '53910905-2afc-430d-8f8e-e491ed97b4e8'
 code = """curl --silent --request POST \
 --url https://app.slickk.ai/api/project/entryPoint \
 --header 'Accept: */*' \
@@ -17,10 +18,10 @@ code = """curl --silent --request POST \
 
 #execute code
 results = os.popen(code).read()
-print(results)
+#print(results)
 #above return string, include progress, so remove
-#results = re.sub(r'{"progress":\d+,"max":\d+}',"", results)
+results = re.sub(r'{"progress":\d+,"max":\d+}',"", results)
 #process using json library and load into program
-#results = json.loads(results)
+results = json.loads(results)
 #print text of the result
-#print([result["text"] for result in results])
+print([result["text"] for result in results])
