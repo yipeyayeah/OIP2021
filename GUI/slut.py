@@ -111,10 +111,13 @@ class TestGUI():
 
         if 'dirty' in syringeStatus:
             self.cleaningProcess()
+            
         elif 'wet' in syringeStatus:
             self.dryingProcess()
         else:
             self.sterilisationProcess()
+            
+        
 
 
     def cleaningProcess(self):
@@ -136,7 +139,7 @@ class TestGUI():
             time.sleep(1)
             if (line == '4'):
                 check = False
-
+        self.captureImage()
         self.dryingProcess()
 
     def dryingProcess(self):
@@ -183,6 +186,8 @@ class TestGUI():
         self.finalProcess()
 
     def finalProcess(self):
+       
+        
         self.lblProcessOne.lower()
         self.lblProcessTwo.lower()
         self.lblCleaningCompleted = tk.Label(fg='#F0EFF5', image=self.cleaningCompletedPhotoImage, borderwidth=0,
@@ -302,7 +307,7 @@ class TestGUI():
 
     def sendSMS(self):
         account_sid = "AC35b622ad2fd3094dfd47f9b94e4ef723"
-        auth_token = "a6bed858fc2a1c35ce4cbda258099701"
+        auth_token = "7bc6635a41ecd3131d29b1f39e43fff4"
         client = Client(account_sid, auth_token)
 
         client.messages.create(
