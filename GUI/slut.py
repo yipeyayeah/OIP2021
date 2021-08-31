@@ -48,12 +48,9 @@ class TestGUI():
         self.checkingSyringeImage = Image.open("resources/CheckingSyringe.png")
         self.checkingSyringePhotoImage = ImageTk.PhotoImage(self.checkingSyringeImage)
 
-
         self.lblHomeScreen = tk.Label(fg='#F0EFF5', image=self.homeScreenPhotoImage, borderwidth=0,
                                       highlightthickness=0)
         self.lblHomeScreen.place(relwidth=1, relheight=1, relx=0, rely=0)
-
-
 
         self.lblProcessOne = tk.Label()
         self.lblProcessTwo = tk.Label()
@@ -72,7 +69,6 @@ class TestGUI():
         self.lblStartText.place(x=440, y=340)
         self.root.mainloop()
 
-
     def checkSyringes(self):
         # Refreshes GUI components to show the cleaning process
         self.lblNoUpdate.lower()
@@ -83,14 +79,14 @@ class TestGUI():
         self.lblProcessOne = tk.Label(fg='#F0EFF5', image=self.checkingSyringePhotoImage)
         self.lblProcessOne.place(x=300, y=170)
         self.root.update()
-        
+
         # Send command '5' six times. For each command, wait for ack ['4']
         # Once '4' is received, execute capture image
         # After capture image, send to API
         count = 0
         check = True
         while count < 2:
-            
+
             self.sendCommandToArduino(5, self.ser)
             print("inside")
             check = True
@@ -118,7 +114,6 @@ class TestGUI():
             self.sterilisationProcess()
             
         
-
 
     def cleaningProcess(self):
         # Refreshes GUI components to show the cleaning process
@@ -162,7 +157,6 @@ class TestGUI():
                 check = False
 
         self.sterilisationProcess()
-
 
     def sterilisationProcess(self):
         self.lblProcessOne.lower()
@@ -280,8 +274,8 @@ class TestGUI():
         cv2.destroyAllWindows()
 
     def sendToAPI(self):
-        project_id = 'db06a0d9-66d8-4a25-8271-545c23db73d9' #backup classification
-   
+        project_id = 'db06a0d9-66d8-4a25-8271-545c23db73d9'  # backup classification
+
         # project_id = '53910905-2afc-430d-8f8e-e491ed97b4e8' #object detection (clearn, dirty, empty)
         # project_id = 'dfbb7979-773f-4b4e-b8b9-64331d6fd477'
         code = """curl --silent --request POST \
@@ -306,14 +300,16 @@ class TestGUI():
         ser.write(str(command).encode('utf-8'))
 
     def sendSMS(self):
+
         account_sid = "AC35b622ad2fd3094dfd47f9b94e4ef723"
         auth_token = "7bc6635a41ecd3131d29b1f39e43fff4"
         client = Client(account_sid, auth_token)
 
-        client.messages.create(
-            to="+65" + str(92313810),
+        message = client.messages.create(
+            to="+65" + str(96388495),
             from_="+16182081528",
             body="Cleaning Cycle Completed! Please check STERIDRY machine :)")
 
+        print(message)
 
 app = TestGUI()
