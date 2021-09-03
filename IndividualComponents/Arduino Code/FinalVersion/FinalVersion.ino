@@ -40,15 +40,18 @@ void setup() {
 }
 
 void loop() {
+  int start = 0;
   digitalWrite(LED_green, HIGH); //turn on green LED (Idle Mode)
   digitalWrite(LED_orange, LOW); //turn off red LED
   digitalWrite(RGB_green, HIGH); //turn off water valves
-  /*Serial.println("send 1 to start");
+  Serial.println("send 1 to start");
   while(Serial.available() <=0){
   }
-  int CleaningMode = Serial.read();
+  start = Serial.read();
   sendMessage("4");
-  */CleaningMode = HIGH;
+  if(start == 1){
+    CleaningMode = HIGH;
+  }
   while(CleaningMode = HIGH){
     digitalWrite(LED_green, LOW); //turn off Green LED
     digitalWrite(LED_orange, HIGH); //turn on Orange LED (Cleaning Mode)
@@ -94,6 +97,12 @@ void loop() {
           DrainTank();
           sendMessage("4");
           break; 
+
+        case 8:
+          sendMessage("[Arduino] Inside Case 8. End Cleaning Mode");
+          CleaningMode = LOW;
+          sendMessage("4");
+          break;
           
         default: 
           break;
