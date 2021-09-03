@@ -7,7 +7,7 @@ The Overseas Immersion Project (OIP) objective is to provide a platform to work 
 
 ## Project Structure
     .
-    ├── GUI                    # Coding files
+    ├── GUI                    # Main files
     ├── IndividualComponents   # Components such as SMS Service, Sending API Resquest to Slick.AI, Camera Capture
     └── README.md
 
