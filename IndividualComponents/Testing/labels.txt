@@ -1,4 +1,4 @@
-Clean
-Wet
-Dirty
-Empty
+clean
+wet
+dirty
+empty

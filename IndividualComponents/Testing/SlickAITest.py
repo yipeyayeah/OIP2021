@@ -11,7 +11,7 @@ def sendToAPI():
         if filename.endswith(".jpg"):
             file_paths = [os.path.join(directory, filename)]
             print(filename)
-            project_id = '53910905-2afc-430d-8f8e-e491ed97b4e8' #object detection (clean, dirty, empty)
+            project_id = '53910905-2afc-430d-8f8e-e491ed97b4e8' #object detection (clean, dirty, wet, empty)
             code = """curl --silent --request POST \
             --url https://app.slickk.ai/api/project/entryPoint \
             --header 'Accept: */*' \
